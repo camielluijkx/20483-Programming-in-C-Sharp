@@ -61,7 +61,9 @@ namespace School
             switch (e.Key)
             {
                 // If the user pressed Enter, edit the details for the currently selected student
-                case Key.Enter: Student student = this.studentsList.SelectedItem as Student;
+                case Key.Enter:
+
+                    Student student = this.studentsList.SelectedItem as Student;
 
                     // Use the StudentsForm to display and edit the details of the student
                     StudentForm sf = new StudentForm();
@@ -82,6 +84,7 @@ namespace School
                         // Enable saving (changes are not made permanent until they are written back to the database)
                         saveChanges.IsEnabled = true;
                     }
+
                     break;
 
                 // If the user pressed Insert, add a new student
@@ -102,6 +105,7 @@ namespace School
                         newStudent.FirstName = sf.firstName.Text;
                         newStudent.LastName = sf.lastName.Text;
                         newStudent.DateOfBirth = DateTime.ParseExact(sf.dateOfBirth.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                        
                         // Assign the new student to the current teacher
                         this.teacher.Students.Add(newStudent);
 
@@ -111,12 +115,30 @@ namespace School
                         // Enable saving (changes are not made permanent until they are written back to the database)
                         saveChanges.IsEnabled = true;
                     }
+
                     break;
 
-                    // TODO: Exercise 3: Task 1a: If the user pressed Delete, remove the currently selected student
-                    // TODO: Exercise 3: Task 2a: Prompt the user to confirm that the student should be removed
-                    // TODO: Exercise 3: Task 3a: If the user clicked Yes, remove the student from the database
-                    // TODO: Exercise 3: Task 3b: Enable saving (changes are not made permanent until they are written back to the database)
+                // Exercise 3: Task 1a: If the user pressed Delete, remove the currently selected student
+                case Key.Delete:
+
+                    student = this.studentsList.SelectedItem as Student;
+
+                    // Exercise 3: Task 2a: Prompt the user to confirm that the student should be removed
+                    MessageBoxResult response = MessageBox.Show(
+                        String.Format("Remove {0}", student.FirstName + " " + student.LastName),
+                        "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question,
+                        MessageBoxResult.No);
+
+                    // Exercise 3: Task 3a: If the user clicked Yes, remove the student from the database
+                    if (response == MessageBoxResult.Yes)
+                    {
+                        this.schoolContext.Students.DeleteObject(student);
+
+                        // Exercise 3: Task 3b: Enable saving (changes are not made permanent until they are written back to the database)
+                        saveChanges.IsEnabled = true;
+                    }
+
+                    break;
             }
         }
 
@@ -124,7 +146,7 @@ namespace School
 
         private void studentsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
- 
+
         }
 
         // Save changes back to the database and make them permanent

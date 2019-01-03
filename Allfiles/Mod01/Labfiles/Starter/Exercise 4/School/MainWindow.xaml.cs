@@ -61,7 +61,9 @@ namespace School
             switch (e.Key)
             {
                 // If the user pressed Enter, edit the details for the currently selected student
-                case Key.Enter: Student student = this.studentsList.SelectedItem as Student;
+                case Key.Enter:
+
+                    Student student = this.studentsList.SelectedItem as Student;
 
                     // Use the StudentsForm to display and edit the details of the student
                     StudentForm sf = new StudentForm();
@@ -114,7 +116,9 @@ namespace School
                     break;
 
                 // If the user pressed Delete, remove the currently selected student
-                case Key.Delete: student = this.studentsList.SelectedItem as Student;
+                case Key.Delete:
+
+                    student = this.studentsList.SelectedItem as Student;
 
                     // Prompt the user to confirm that the student should be removed
                     MessageBoxResult response = MessageBox.Show(
@@ -156,14 +160,26 @@ namespace School
         public object Convert(object value, Type targetType, object parameter,
                               System.Globalization.CultureInfo culture)
         {
-            // Convert the date of birth provided in the value parameter and convert to the age of the student in years
-            // TODO: Exercise 4: Task 2a: Check that the value provided is not null. If it is, return an empty string
-            // TODO: Exercise 4: Task 2b: Convert the value provided into a DateTime value
-            // TODO: Exercise 4: Task 2c: Work out the difference between the current date and the value provided
-            // TODO: Exercise 4: Task 2d: Convert this result into a number of years
-            // TODO: Exercise 4: Task 2e: Convert the number of years into a string and return it
+            // Convert the date of birth provided in the value parameter and convert to the age of the student in years   
+            // Exercise 4: Task 2a: Check that the value provided is not null. If it is, return an empty string
+            if (value != null)
+            {
+                // Exercise 4: Task 2b: Convert the value provided into a DateTime value
+                DateTime studentDateOfBirth = (DateTime)value;
 
-            return "";
+                // Exercise 4: Task 2c: Work out the difference between the current date and the value provided
+                TimeSpan difference = DateTime.Now.Subtract(studentDateOfBirth);
+
+                // Exercise 4: Task 2d: Convert this result into a number of years
+                int ageInYears = (int)(difference.Days / 365.25);
+
+                // Exercise 4: Task 2e: Convert the number of years into a string and return it
+                return ageInYears.ToString();
+            }
+            else
+            {
+                return "";
+            }
         }
 
         #region Predefined code
